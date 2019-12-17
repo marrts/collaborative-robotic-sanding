@@ -346,10 +346,16 @@
         <child link="robot_stand" />
         <origin rpy="0 0 0" xyz="0 0 0" />
     </joint>
+    <link name="gazebo_camera_link" />
+    <joint name="gazebo_camera_joint" type="fixed">
+        <origin xyz="0 0 0.02" rpy="0 0 1.571"/>
+        <parent link="wrist_3_link"/>
+        <child link="gazebo_camera_link"/>
+    </joint>
     <link name="camera_link_optical" />
     <joint name="camera_optical_joint" type="fixed">
         <origin xyz="0 0 0" rpy="-1.571 0 -1.571"/>
-        <parent link="wrist_3_link"/>
+        <parent link="gazebo_camera_link"/>
         <child link="camera_link_optical"/>
     </joint>
 
@@ -456,7 +462,7 @@
     <gazebo reference="tool0">
         <selfCollide>true</selfCollide>
     </gazebo>
-    <gazebo reference="wrist_3_link">
+    <gazebo reference="gazebo_camera_link">
         <sensor type="depth" name="sensor_name">
           <!-- Set always_on only sensor, not on plugin -->
           <always_on>1</always_on>
