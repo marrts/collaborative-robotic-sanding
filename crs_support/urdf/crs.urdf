@@ -250,7 +250,7 @@
     <link name="eoat_link">
         <visual>
             <geometry>
-                <cylinder length="0.20" radius="0.02" />
+                <mesh filename="package://crs_support/meshes/end_effector/visual/FRAMOS.stl" />
             </geometry>
             <material name="Orange">
                 <color rgba="1.0 0.4 0.0 1.0" />
@@ -258,21 +258,20 @@
         </visual>
         <collision>
             <geometry>
-                <cylinder length="0.20" radius="0.02" />
+                <mesh filename="package://crs_support/meshes/end_effector/collision/FRAMOS_collision.stl" />
             </geometry>
         </collision>
 
         <inertial>
-            <mass value="0.202" />
+            <mass value="0.01" />
             <origin rpy="0 0 0" xyz="0.0 0.0 0.0" />
             <inertia ixx="0.000526462289415" ixy="0.0" ixz="0.0" iyy="0.000526462289415" iyz="0.0" izz="0.000568125" />
         </inertial>
-
     </link>
     <joint name="tool0_to_eoat_link" type="fixed">
         <parent link="tool0" />
         <child link="eoat_link" />
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        <origin rpy="1.57 0.0 0" xyz="-0.04 0.09 -0.03" />
     </joint>
     <link name="robot_stand">
         <visual>
