@@ -44,7 +44,7 @@ def generate_launch_description():
         node_name='spawn_node',
         package='gazebo_ros',
         node_executable='spawn_entity.py',
-        arguments=['-entity', 'test', '-x', '0', '-y', '0', '-z', '0.05', '-file', urdf])
+        arguments=['-entity', 'robot', '-x', '0', '-y', '0', '-z', '0.05', '-file', urdf])
 
     return launch.LaunchDescription([
         # environment
