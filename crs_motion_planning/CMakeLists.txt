@@ -25,9 +25,7 @@ find_package(rclcpp_action REQUIRED)
 
 find_package(crs_msgs REQUIRED)
 
-#find_package(tesseract REQUIRED)
 find_package(tesseract_motion_planners REQUIRED)
-#find_package(tesseract_process_planners REQUIRED)
 find_package(tesseract_rosutils REQUIRED)
 
 find_package(std_srvs REQUIRED)
@@ -60,7 +58,6 @@ target_include_directories(${PROJECT_NAME}_planning_test PUBLIC
   ${tf2_INCLUDE_DIRS}
   ${tf2_eigen_INCLUDE_DIRS}
   ${tf2_ros_INCLUDE_DIRS}
-#  ${tesseract_motion_planners
   )
 target_link_libraries(${PROJECT_NAME}_planning_test
   ${rclcpp_LIBRARIES}
