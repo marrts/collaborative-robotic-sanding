@@ -130,7 +130,6 @@ private:
     traj_pc->smooth_velocities = true;
     traj_pc->smooth_accelerations = true;
     traj_pc->collision_check = true;
-    traj_pc->collision_continuous = true;
     traj_pc->collision_coeff = 20;
 //    traj_pc->params.cnt_tolerance = 0.02;
     traj_pc->longest_valid_segment_length = 0.05;
