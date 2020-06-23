@@ -287,7 +287,8 @@
             </material>
         </visual>
         <visual>
-            <origin rpy="1.57079632679 0 0" xyz="0.20 0 -0.1168" />
+<!--            <origin rpy="1.57079632679 0 0" xyz="0.20 0 -0.1168" />-->
+            <origin rpy="1.57079632679 0 0" xyz="0.0 0.35 -0.1168" />
             <geometry>
                 <mesh filename="package://crs_support/meshes/Mockup/visual/mockup_cart_v4.stl" />
             </geometry>
@@ -295,12 +296,13 @@
                 <color rgba="0.7 0.7 0.7 1.0" />
             </material>
         </visual>
-        <collision>
+<!--        <collision>
             <origin rpy="1.57079632679 0 0" xyz="0.20 0 -0.1168" />
+            <origin rpy="1.57079632679 0 0" xyz="0.00 0.35 -0.1168" />
             <geometry>
                 <mesh filename="package://crs_support/meshes/Mockup/collision/Mockup3_6_Cart_collision.stl" />
             </geometry>
-        </collision>
+        </collision>-->
         <collision> <!-- Right Wall-->
             <geometry>
                 <box size="3.0 2.14 0.1" />
@@ -373,12 +375,12 @@
             </geometry>
             <origin rpy="0 0.785 0" xyz="-2.06 -2.135 1.38" />
         </collision>
-        <collision> <!-- fake floor -->
+<!--        <collision> fake floor
             <geometry>
                 <box size="3.0 0.12 3.0" />
             </geometry>
             <origin rpy="0 0 0" xyz="-0.65 -0.82 0" />
-        </collision>
+        </collision>-->
 
         <inertial>
             <mass value="0.1" />
