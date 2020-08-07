@@ -335,7 +335,7 @@
         <child link="${prefix}tool0" />
     </joint>
     <link name="${prefix}eoat_link">
-      <visual>
+      <!--<visual>
           <geometry>
               <mesh filename="package://crs_support/meshes/end_effector/visual/full_ee_v4.stl" />
           </geometry>
@@ -347,8 +347,8 @@
           <geometry>
               <mesh filename="package://crs_support/meshes/end_effector/collision/full_ee_v4_collision.stl" />
           </geometry>
-      </collision>
-<!--      <inertial> Keep this here for testing with other sander end effector
+      </collision>-->
+      <inertial> Keep this here for testing with other sander end effector
         <origin xyz="8.625E-08 -4.6583E-06 0.03145" rpy="0 0 0" />
         <origin xyz="0 0 0" rpy="0 0 0" />
         <mass value="0.22652" />
@@ -386,21 +386,21 @@
         <geometry>
           <mesh filename="package://crs_support/meshes/end_effector/visual/ee1.stl" />
         </geometry>
-      </collision>-->
+      </collision>
 
     </link>
 
     <joint name="${prefix}tool0_to_eoat_link" type="fixed">
         <parent link="${prefix}tool0" />
         <child link="${prefix}eoat_link" />
-<!--        <origin xyz="0 0 0" rpy="1.57 0 -1.57" />-->
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="1.57 0 -1.57" />
+<!--        <origin xyz="0 0 0" rpy="0 0 0" />-->
     </joint>
 
     <link name="${prefix}sander_center_link" />
 
     <link name="${prefix}sander_intermediate_link">
-      <visual>
+      <!--<visual>
           <geometry>
               <cylinder length="0.025" radius="0.06425" />
           </geometry>
@@ -411,7 +411,7 @@
               <cylinder length="0.025" radius="0.06425" />
           </geometry>
           <origin rpy="0 0 0" xyz="0 0 0" />
-      </collision>
+      </collision>-->
     </link>
 
     <joint name="${prefix}sander_intermediate_to_sander_center_link" type="fixed">
@@ -427,9 +427,9 @@
         <parent link="${prefix}eoat_link" />
         <child link="${prefix}sander_intermediate_link" />
 <!--        <origin xyz="0 0.16578 0.01902" rpy="-0.785 0 0" />-->
-<!--        <origin xyz="0 0.162 0.015" rpy="-0.785 0 0" />-->
+        <origin xyz="0 0.162 0.015" rpy="-0.785 0 0" />
 <!--        <origin xyz="0 0.04612 -0.03371" rpy="-2.355 0 0" />-->
-        <origin xyz="0.0 -0.15497 0.17503" rpy="0.7854 0.0 0.0"/>
+<!--        <origin xyz="0.0 -0.15497 0.17503" rpy="0.7854 0.0 0.0"/>-->
     </joint>
     <link name="${prefix}gazebo_camera_link" />
     <joint name="${prefix}gazebo_camera_joint" type="fixed">
@@ -439,7 +439,7 @@
     </joint>
     <link name="${prefix}camera_link_optical" />
     <joint name="${prefix}camera_optical_joint" type="fixed">
-        <origin xyz="-0.021 0.0797 0.06525" rpy="-0.7854 0 0"/>
+        <origin xyz="-0.022 0.079773 0.065" rpy="-0.7854 0 0"/>
         <parent link="${prefix}eoat_link"/>
         <child link="${prefix}camera_link_optical"/>
     </joint>
