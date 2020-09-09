@@ -16,6 +16,7 @@
   <depend>std_srvs</depend>
   <depend>std_msgs</depend>
   <depend>ur_dashboard_msgs</depend>
+  <depend>ur_msgs</depend>
   <depend>crs_msgs</depend>
   
   <export>

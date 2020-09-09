@@ -5,7 +5,10 @@
 #include <ur_dashboard_msgs/srv/load.hpp>
 #include <ur_dashboard_msgs/srv/is_program_running.hpp>
 
+#include <ur_msgs/msg/io_states.hpp>
+
 #include <crs_msgs/srv/run_robot_script.hpp>
+#include <crs_msgs/srv/robot_positioner.hpp>
 
 static const std::string UR_DASHBOARD_LOAD_SERVICE = "/ur_hardware_interface/dashboard/load_program";
 static const std::string UR_DASHBOARD_PLAY_SERVICE = "/ur_hardware_interface/dashboard/play";
@@ -13,6 +16,8 @@ static const std::string UR_RESTART_CONTROL_SERVICE = "/ur_hardware_interface/re
 static const std::string UR_CHECK_RUNNING_SERVICE = "/ur_hardware_interface/dashboard/program_running";
 static const std::string CRS_RUN_ROBOT_SCRIPT_SERVICE = "run_robot_script";
 static const std::string RECLAIM_REMOTE_CONTROL_SERVICE = "reconnect_to_robot";
+static const std::string UR_IO_STATE_TOPIC = "/ur_msgs/IOStates";
+static const std::string MOVE_ROBOT_BASE_SERVICE = "move_robot_base";
 
 class URRobotComms
 {
@@ -34,6 +39,9 @@ public:
         pnode_->create_client<ur_dashboard_msgs::srv::IsProgramRunning>(UR_CHECK_RUNNING_SERVICE);
     play_robot_script_client_ = pnode_->create_client<std_srvs::srv::Trigger>(UR_DASHBOARD_PLAY_SERVICE);
     restart_robot_control_client_ = pnode_->create_client<std_srvs::srv::Trigger>(UR_RESTART_CONTROL_SERVICE);
+
+    ur_io_subscription_ = pnode_->create_subscription<ur_msgs::msg::IOStates>(UR_IO_STATE_TOPIC, 10, std::bind(&URRobotComms::UrIoCallback, this, std::placeholders::_1));
+    move_ur_base_service_ = pnode_->create_client<crs_msgs::srv::RobotPositioner>(MOVE_ROBOT_BASE_SERVICE);
   }
 
   void getPrivNode(rclcpp::Node::SharedPtr& priv_node) { priv_node = pnode_; }
@@ -168,6 +176,47 @@ private:
     response->message = "Remote control over robot established";
   }
 
+  void UrIoCallback(const ur_msgs::msg::IOStates::SharedPtr ur_io_msg)
+  {
+    if (!ur_io_msg_)
+    {
+      ur_io_msg_ = ur_io_msg;
+      for (auto& digital_in_state : ur_io_msg_->digital_in_states)
+      {
+        digital_in_state.state = false;
+      }
+    }
+    if (ur_io_msg != ur_io_msg_)
+    {
+      for (size_t i = 0; i < ur_io_msg->digital_in_states.size(); ++i)
+      {
+        if (ur_io_msg->digital_in_states[i] != ur_io_msg_->digital_in_states[i])
+        {
+          auto update_base_req = std::make_shared<crs_msgs::srv::RobotPositioner::Request>();
+          update_base_req->robot_rail = update_base_req->RAIL1;
+          update_base_req->robot_position = ur_io_msg->digital_in_states[i].pin;
+
+          std::shared_future<crs_msgs::srv::RobotPositioner::Response::SharedPtr> update_base_future =
+              move_ur_base_service_->async_send_request(update_base_req);
+
+          std::future_status update_base_status = update_base_future.wait_for(std::chrono::seconds(20));
+          if (update_base_status != std::future_status::ready)
+          {
+            RCLCPP_ERROR(node_->get_logger(), "Update robot base service error or timeout");
+            return;
+          }
+          if (!update_base_future.get()->success)
+          {
+            RCLCPP_ERROR(node_->get_logger(), "Update robot base service failed");
+            return;
+          }
+          RCLCPP_INFO(node_->get_logger(), "Update robot base service succeeded");
+        }
+      }
+      ur_io_msg_ = ur_io_msg;
+    }
+  }
+
   rclcpp::Service<crs_msgs::srv::RunRobotScript>::SharedPtr load_robot_script_service_;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr reclaim_remote_control_service_;
 
@@ -177,8 +226,13 @@ private:
   rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr play_robot_script_client_;
   rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr restart_robot_control_client_;
 
+  rclcpp::Subscription<ur_msgs::msg::IOStates>::SharedPtr ur_io_subscription_;
+  rclcpp::Client<crs_msgs::srv::RobotPositioner>::SharedPtr move_ur_base_service_;
+
   std::shared_ptr<rclcpp::Node> node_;
   std::shared_ptr<rclcpp::Node> pnode_;
+
+  ur_msgs::msg::IOStates::SharedPtr ur_io_msg_;
 };
 
 int main(int argc, char** argv)

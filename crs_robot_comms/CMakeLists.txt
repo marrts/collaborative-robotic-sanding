@@ -27,6 +27,7 @@ find_package(crs_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(ur_dashboard_msgs REQUIRED)
+find_package(ur_msgs REQUIRED)
 
 add_executable(${PROJECT_NAME}_ur_comms src/ur_comms.cpp)
 target_include_directories(${PROJECT_NAME}_ur_comms PUBLIC
@@ -38,6 +39,7 @@ target_include_directories(${PROJECT_NAME}_ur_comms PUBLIC
   ${crs_msgs_INCLUDE_DIRS}
   ${std_srvs_INCLUDE_DIRS}
   ${ur_dashboard_msgs_INCLUDE_DIRS}
+  ${ur_msgs_INCLUDE_DIRS}
   )
 target_link_libraries(${PROJECT_NAME}_ur_comms
   ${rclcpp_LIBRARIES}
@@ -45,6 +47,7 @@ target_link_libraries(${PROJECT_NAME}_ur_comms
   ${crs_msgs_LIBRARIES}
   ${std_srvs_LIBRARIES}
   ${ur_dashboard_msgs_LIBRARIES}
+  ${ur_msgs_LIBRARIES}
   )
 
 add_executable(${PROJECT_NAME}_ur_comms_sim src/ur_comms_sim.cpp)
@@ -57,6 +60,7 @@ target_include_directories(${PROJECT_NAME}_ur_comms_sim PUBLIC
   ${crs_msgs_INCLUDE_DIRS}
   ${std_srvs_INCLUDE_DIRS}
   ${ur_dashboard_msgs_INCLUDE_DIRS}
+  ${ur_msgs_INCLUDE_DIRS}
   )
 target_link_libraries(${PROJECT_NAME}_ur_comms_sim
   ${rclcpp_LIBRARIES}
@@ -64,6 +68,7 @@ target_link_libraries(${PROJECT_NAME}_ur_comms_sim
   ${crs_msgs_LIBRARIES}
   ${std_srvs_LIBRARIES}
   ${ur_dashboard_msgs_LIBRARIES}
+  ${ur_msgs_LIBRARIES}
   )
 
 if(BUILD_TESTING)
