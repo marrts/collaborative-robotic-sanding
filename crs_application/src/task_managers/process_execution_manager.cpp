@@ -390,11 +390,6 @@ bool ProcessExecutionManager::changeActiveController(const bool turn_on_cart)
   std::shared_future<SetBool::Response::SharedPtr> result_future = controller_changer_client_->async_send_request(req);
 
   std::future_status status = result_future.wait_for(std::chrono::seconds(15));
-  if (status != std::future_status::ready)
-  {
-    RCLCPP_ERROR(node_->get_logger(), "change controller service error or timeout");
-    return false;
-  }
 
   if (!result_future.get()->success)
   {
@@ -419,11 +414,6 @@ bool ProcessExecutionManager::toggleSander(const bool turn_on_sander)
   std::shared_future<SetBool::Response::SharedPtr> result_future = toggle_sander_client_->async_send_request(req);
 
   std::future_status status = result_future.wait_for(std::chrono::seconds(15));
-  if (status != std::future_status::ready)
-  {
-    RCLCPP_ERROR(node_->get_logger(), "Toggle sander service error or timeout");
-    return false;
-  }
 
   if (!result_future.get()->success)
   {
